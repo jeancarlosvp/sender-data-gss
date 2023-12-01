@@ -1,6 +1,7 @@
 from fastapi import APIRouter, status
 from app.datapayments.schemas import DataPayments
 from app.config import worksheet, SEND_GS
+from datetime import datetime
 
 router = APIRouter(prefix="/datapayments", tags=["datapayments"])
 
@@ -9,6 +10,7 @@ async def datapayments(data_payment: DataPayments):
     try:
         if SEND_GS == "True":
             print(SEND_GS)
+            data_payment.date_payment = datetime.now().strftime("%d/%m/%Y")
             row_to_add = len(worksheet.get('B1:B')) + 1
             worksheet.batch_update([
                 {
